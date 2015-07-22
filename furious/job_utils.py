@@ -121,10 +121,17 @@ def path_to_reference(path):
         logging.info("path_to_reference - Post Import : %s",
                      memory_usage().current())
     except ImportError:
+
+        logging.info("path_to_reference - Pre Import (Error) : %s",
+                     memory_usage().current())
+
         module_path, class_name = module_path.rsplit('.', 1)
 
         module = __import__(name=module_path, fromlist=[class_name])
         module = getattr(module, class_name)
+
+        logging.info("path_to_reference - Post Import (Error) : %s",
+                     memory_usage().current())
 
     try:
         return getattr(module, function_name)
