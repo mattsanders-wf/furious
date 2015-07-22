@@ -21,6 +21,8 @@ import logging
 
 from collections import namedtuple
 
+from google.appengine.api.runtime.runtime import memory_usage
+
 from furious.async import Async
 from furious.async import AsyncResult
 from furious.context import Context
@@ -35,6 +37,8 @@ AsyncException = namedtuple('AsyncException', 'error args traceback exception')
 
 def run_job():
     """Takes an async object and executes its job."""
+
+    logging.info("Run Job Memory : %s", memory_usage().current())
     async = get_current_async()
     async_options = async.get_options()
 

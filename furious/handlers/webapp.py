@@ -13,7 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import logging
 import webapp2
+
+from google.appengine.api.runtime.runtime import memory_usage
 
 from furious.handlers import process_async_task
 from furious.errors import AbortAndRestart
@@ -33,6 +36,7 @@ class AsyncJobHandler(webapp2.RequestHandler):
 
         message = None
         try:
+            logging.info("Handler Memory : %s", memory_usage().current())
             status_code, output = process_async_task(
                 headers, self.request.body)
         except AbortAndRestart as restart:

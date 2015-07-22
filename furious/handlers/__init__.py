@@ -19,6 +19,8 @@ import time
 
 import logging
 
+from google.appengine.api.runtime.runtime import memory_usage
+
 from furious.async import async_from_options
 from furious import context
 from furious.processors import run_job
@@ -49,7 +51,8 @@ def _log_task_info(headers, extra_task_info=None):
         'execution_count': headers.get('X-Appengine-Taskexecutioncount', ''),
         'task_eta': task_eta,
         'ran': ran_at,
-        'gae_latency_seconds': ran_at - task_eta
+        'gae_latency_seconds': ran_at - task_eta,
+        'memory': memory_usage().current()
     }
 
     if extra_task_info:
