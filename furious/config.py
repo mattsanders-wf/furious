@@ -178,7 +178,11 @@ def _parse_yaml_config(config_data=None):
     Returns:
         a dictionary parsed from the yaml file
     """
-    logging.info("Pre YAML Config Memory : %s", memory_usage().current())
+    try:
+        logging.info("Pre YAML Config Memory : %s", memory_usage().current())
+    except Exception:
+        pass
+
     data_map = default_config()
 
     # If we were given config data to use, use it.  Otherwise, see if there is
@@ -204,7 +208,10 @@ def _parse_yaml_config(config_data=None):
         raise InvalidYamlFile("The furious.yaml file "
                               "is invalid yaml")
 
-    logging.info("Post YAML Config Memory : %s", memory_usage().current())
+    try:
+        logging.info("Post YAML Config Memory : %s", memory_usage().current())
+    except Exception:
+        pass
 
     return data_map
 
