@@ -57,6 +57,9 @@ def run_job():
     if kwargs is None:
         kwargs = {}
 
+    logging.info("Run Job Memory - Pre path_to_reference : %s",
+                 memory_usage().current())
+
     function = path_to_reference(function_path)
 
     try:

@@ -17,6 +17,9 @@
 """
 Functions to help with encoding and decoding job information.
 """
+import logging
+
+from google.appengine.api.runtime.runtime import memory_usage
 
 from furious import errors
 
@@ -108,8 +111,15 @@ def path_to_reference(path):
     module_path, function_name = path.rsplit('.', 1)
 
     try:
+
+        logging.info("path_to_reference - Pre Import : %s",
+                     memory_usage().current())
+
         module = __import__(name=module_path,
                             fromlist=[function_name])
+
+        logging.info("path_to_reference - Post Import : %s",
+                     memory_usage().current())
     except ImportError:
         module_path, class_name = module_path.rsplit('.', 1)
 
