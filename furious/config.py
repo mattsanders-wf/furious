@@ -18,6 +18,8 @@ import os
 
 import yaml
 
+from google.appengine.api.runtime.runtime import memory_usage
+
 FURIOUS_YAML_NAMES = ['furious.yaml', 'furious.yml']
 
 PERSISTENCE_MODULES = {
@@ -176,6 +178,7 @@ def _parse_yaml_config(config_data=None):
     Returns:
         a dictionary parsed from the yaml file
     """
+    logging.info("Pre YAML Config Memory : %s", memory_usage().current())
     data_map = default_config()
 
     # If we were given config data to use, use it.  Otherwise, see if there is
@@ -200,6 +203,8 @@ def _parse_yaml_config(config_data=None):
     elif not None:
         raise InvalidYamlFile("The furious.yaml file "
                               "is invalid yaml")
+
+    logging.info("Post YAML Config Memory : %s", memory_usage().current())
 
     return data_map
 

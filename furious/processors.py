@@ -42,6 +42,9 @@ def run_job():
     async = get_current_async()
     async_options = async.get_options()
 
+    logging.info("Run Job Memory - Post Options : %s",
+                 memory_usage().current())
+
     job = async_options.get('job')
     if not job:
         raise Exception('This async contains no job to execute!')
@@ -58,8 +61,15 @@ def run_job():
 
     try:
         async.executing = True
+
+        logging.info("Run Job Memory - Pre Target Exec : %s",
+                     memory_usage().current())
+
         async.result = AsyncResult(payload=function(*args, **kwargs),
                                    status=AsyncResult.SUCCESS)
+
+        logging.info("Run Job Memory - Post Target Exec : %s",
+                     memory_usage().current())
     except Abort as abort:
         logging.info('Async job was aborted: %r', abort)
         async.result = AsyncResult(status=AsyncResult.ABORT)
